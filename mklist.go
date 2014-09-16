@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
-    "os/exec"
+	"os/exec"
 	"text/template"
 )
 
@@ -54,13 +54,13 @@ func main() {
 	}
 
 	// pdf erzeugen
-    err = exec.Command("rsvg-convert", "-f", "pdf", "-o", target + ".out.pdf", target + ".out.svg").Run()
+	err = exec.Command("rsvg-convert", "-f", "pdf", "-o", target+".out.pdf", target+".out.svg").Run()
 	if err != nil {
 		panic(err)
 	}
 
 	// png erzeugen
-    err = exec.Command("rsvg-convert", "-f", "png", "-o", target + ".out.png", target + ".out.svg").Run()
+	err = exec.Command("rsvg-convert", "-f", "png", "-o", target+".out.png", target+".out.svg").Run()
 	if err != nil {
 		panic(err)
 	}
