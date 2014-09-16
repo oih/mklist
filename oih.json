@@ -1,0 +1,39 @@
+{
+    "date": "Feb 1967",
+    "cols": [[{
+        "name": "Haussprecher",
+        "mail": "haussprecher",
+        "members": ["0123 - Max", "1234 - Moritz", "7890 - ..."]
+    }, {
+        "name": "FahrradAG",
+        "mail": "fahrrad",
+        "members": ["..."]
+    }, {
+        "name": "Werkzeugverleih",
+        "mail": "werkzeug",
+        "members": ["..."]
+    }, {
+        "name": "Senat",
+        "mail": "senat",
+        "members": ["..."]
+    }], [{
+        "name": "NetzAG",
+        "mail": "netzwerk",
+        "members": ["..."]
+    }, {
+        "name": "WaschAG",
+        "mail": "waschen",
+        "members": ["..."]
+    }, {
+        "name": "OIH Credits",
+        "members": ["..."]
+    }], [{
+        "name": "Belegungsausschuss",
+        "mail": "ba",
+        "members": ["..."]
+    }, {
+        "name": "Etagensprecher",
+        "mail": "sprecher1, sprecher2, ...",
+        "members": ["..."]
+    }]]
+}
