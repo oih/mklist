@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="de">
+    <head>
+        <title>Aktivenlistengenerator</title>
+        <meta charset="utf-8">
+        <style type="text/css">
+.col { float:left; list-style-type:none; margin:1em; padding:1em; background-color: grey; }
+.group { position: relative; }
+.cover { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: white; opacity: 0.5; display: none; }
+#form.sort .cover { display: block; }
+        </style>
+    </head>
+    <body>
+        <div id="form"></div>
+        <input type="button" value="Umsortieren" id="togglesort">
+        <script src="jquery-1.10.2.js"></script>
+        <script src="jquery-ui.js"></script>
+        <script>
+var col = '<ul class="col"></ul>';
+var group = '<li class="group"><input type="text" class="name"><a href="#" class="remove">-</a><br><span class="row"><input type="text" class="mail"><a href="#" class="add">+</a><br></span><div class="cover"></div></li>';
+var member = '<span class="row"><input type="text" class="member"><a href="#" class="remove">-</a><a href="#" class="add">+</a><br></span>';
+var o = {
+    "date": "Feb 1967",
+    "cols" : [[{
+        "name": "Haussprecher",
+        "mail": "haussprecher",
+        "members": ["0123 - Max", "1234 - Moritz", "7890 - ..."]
+    }, {
+        "name": "FahrradAG",
+        "mail": "fahrrad",
+        "members": ["..."]
+    }],[{"name":"NetzAG","mail":"netzwerk","members":["..."]}],[]]
+};
+for(var c in o.cols) {
+    var $c = $(col);
+    for(var g in o.cols[c]) {
+        var $g = $(group);
+        $g.find("input.name").val(o.cols[c][g].name);
+        $g.find("input.mail").val(o.cols[c][g].mail);
+        for(var m in o.cols[c][g].members) {
+            $m = $(member);
+            $m.find("input").val(o.cols[c][g].members[m]);
+            $g.append($m);
+        }
+        $c.append($g);
+    }
+    $("#form").append($c);
+}
+$("#form").on("click", ".row>a.add", function(e) {
+    $(this).parent().after($(member));
+});
+$("#form").on("click", ".row>a.remove", function(e) {
+    $(this).parent().remove();
+});
+// fixme: durch drag drop lösen:
+$("#form").on("click", ".group>a.remove", function(e) {
+    $(this).parent().remove();
+});
+$("#togglesort").click(function(e) {
+    var iter = $(this).data("iteration") || 0;
+    $("#form").toggleClass("sort");
+    switch(iter) {
+        case 0:
+            $(".col").sortable({
+                connectWith: ".col"
+            });
+        case 1:
+            $(".col").sortable("disable");
+        case 2:
+            $(".col").sortable("enable");
+    }
+    iter = (iter % 2) + 1;
+    $(this).data("iteration", iter);
+});
+        </script>
+    </body>
+</html>
