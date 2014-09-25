@@ -4,21 +4,26 @@
         <title>Aktivenlistengenerator</title>
         <meta charset="utf-8">
         <style type="text/css">
-.col { float:left; list-style-type:none; margin:1em; padding:1em; background-color: grey; }
-.group { position: relative; }
+.col { float:left; list-style-type:none; margin:0.5em; padding:1em; background-color: grey; min-width: 10em; }
+.group { position: relative; border: 0.5em solid white; margin: 0.5em; }
 .cover { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: white; opacity: 0.5; display: none; }
 #form.sort .cover { display: block; }
         </style>
     </head>
     <body>
-        <div id="form"></div>
         <input type="button" value="Umsortieren" id="togglesort">
+        <input type="button" value="Neue Gruppe" id="addgroup">
+        <input type="button" value="Erzeugen" id="create">
+        <div style="clear:both;"></div>
+        <input type="text" id="date">
+        <div style="clear:both;"></div>
+        <div id="form"></div>
         <script src="jquery-1.10.2.js"></script>
         <script src="jquery-ui.js"></script>
         <script>
 var col = '<ul class="col"></ul>';
-var group = '<li class="group"><input type="text" class="name"><a href="#" class="remove">-</a><br><span class="row"><input type="text" class="mail"><a href="#" class="add">+</a><br></span><div class="cover"></div></li>';
-var member = '<span class="row"><input type="text" class="member"><a href="#" class="remove">-</a><a href="#" class="add">+</a><br></span>';
+var group = '<li class="group"><input type="text" class="name"> <a href="#" class="remove">-</a><br><span class="row"><input type="text" class="mail"> <a href="#" class="add">+</a><br></span><div class="cover"></div></li>';
+var member = '<span class="row"><input type="text" class="member"> <a href="#" class="remove">-</a> / <a href="#" class="add">+</a><br></span>';
 var o = {
     "date": "Feb 1967",
     "cols" : [[{
@@ -31,6 +36,7 @@ var o = {
         "members": ["..."]
     }],[{"name":"NetzAG","mail":"netzwerk","members":["..."]}],[]]
 };
+$("#date").val(o.date);
 for(var c in o.cols) {
     var $c = $(col);
     for(var g in o.cols[c]) {
@@ -71,6 +77,35 @@ $("#togglesort").click(function(e) {
     }
     iter = (iter % 2) + 1;
     $(this).data("iteration", iter);
+});
+$("#addgroup").click(function(e) {
+    var $g = $(group);
+    $g.find("input.name").val("(Neue Gruppe)");
+    $g.find("input.mail").val("(neu)");
+    $(".col:last").append($g);
+});
+$("#create").click(function(e) {
+    var n = {
+        "date": $("#date").val(),
+        "cols": []
+    };
+    $(".col").each(function(i, e) {
+        var c = [];
+        $(e).find(".group").each(function(i2, e2) {
+            var g = {
+                "name": $(e2).find("input.name").val(),
+                "mail": $(e2).find("input.mail").val(),
+                "members": []
+            };
+            $(e2).find("input.member").each(function(i3, e3) {
+                g.members.push($(e3).val());
+            });
+            c.push(g);
+        });
+        n.cols.push(c);
+    });
+    o = n;
+    console.log(JSON.stringify(o));
 });
         </script>
     </body>
