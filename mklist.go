@@ -35,7 +35,7 @@ func main() {
             body, err := ioutil.ReadAll(r.Body)
             if err != nil {
                 io.WriteString(w, err.Error())
-                panic(err)
+                return
             }
 
             // JSON parsen
@@ -43,7 +43,7 @@ func main() {
             err = json.Unmarshal(body, &list)
             if err != nil {
                 io.WriteString(w, err.Error())
-                panic(err)
+                return
             }
 
             m[target].Lock()
