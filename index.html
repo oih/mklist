@@ -22,36 +22,28 @@
         <script src="jquery-ui.js"></script>
         <script>
 var col = '<ul class="col"></ul>';
-var group = '<li class="group"><input type="text" class="name"> <a href="#" class="remove">-</a><br><span class="row"><input type="text" class="mail"> <a href="#" class="add">+</a><br></span><div class="cover"></div></li>';
+var group = '<li class="group"><input type="text" class="name" placeholder="Gruppe"> <a href="#" class="remove">-</a><br><span class="row"><input type="text" class="mail" placeholder="Mail"> <a href="#" class="add">+</a><br></span><div class="cover"></div></li>';
 var member = '<span class="row"><input type="text" class="member"> <a href="#" class="remove">-</a> / <a href="#" class="add">+</a><br></span>';
-var o = {
-    "date": "Feb 1967",
-    "cols" : [[{
-        "name": "Haussprecher",
-        "mail": "haussprecher",
-        "members": ["0123 - Max", "1234 - Moritz", "7890 - ..."]
-    }, {
-        "name": "FahrradAG",
-        "mail": "fahrrad",
-        "members": ["..."]
-    }],[{"name":"NetzAG","mail":"netzwerk","members":["..."]}],[]]
-};
-$("#date").val(o.date);
-for(var c in o.cols) {
-    var $c = $(col);
-    for(var g in o.cols[c]) {
-        var $g = $(group);
-        $g.find("input.name").val(o.cols[c][g].name);
-        $g.find("input.mail").val(o.cols[c][g].mail);
-        for(var m in o.cols[c][g].members) {
-            $m = $(member);
-            $m.find("input").val(o.cols[c][g].members[m]);
-            $g.append($m);
+var o = {"date":"","cols":[[],[],[]]};
+$.get("oih.json", function(data) {
+    o = data;
+    $("#date").val(o.date);
+    for(var c in o.cols) {
+        var $c = $(col);
+        for(var g in o.cols[c]) {
+            var $g = $(group);
+            $g.find("input.name").val(o.cols[c][g].name);
+            $g.find("input.mail").val(o.cols[c][g].mail);
+            for(var m in o.cols[c][g].members) {
+                $m = $(member);
+                $m.find("input").val(o.cols[c][g].members[m]);
+                $g.append($m);
+            }
+            $c.append($g);
         }
-        $c.append($g);
+        $("#form").append($c);
     }
-    $("#form").append($c);
-}
+}, "json");
 $("#form").on("click", ".row>a.add", function(e) {
     $(this).parent().after($(member));
 });
@@ -106,6 +98,17 @@ $("#create").click(function(e) {
     });
     o = n;
     console.log(JSON.stringify(o));
+    $.ajax({
+        type: "POST",
+        url: "api",
+        processData: false,
+        contentType: "application/json",
+        dataType: "text",
+        data: JSON.stringify(o),
+        success: function(r) {
+            alert(r);
+        }
+    });
 });
         </script>
     </body>
