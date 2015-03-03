@@ -66,12 +66,13 @@ body {
     margin: 0;
     font-family: oih, sans-serif;
 }
-            .logohead input {
+            input {
                 font-family: inherit;
                 font-size: inherit;
                 background-color: inherit;
                 color: inherit;
                 border: inherit;
+                font-weight: inherit;
             }
             #printme {
                 display: none;
@@ -236,8 +237,8 @@ body {
                     </span>
                 </h2>
             </div>
-            <div id="form"></div>
-            <img src="ss.jpg" style="float:left;">
+            <div id="form" class="listbody"></div>
+            <img src="ss.jpg"><br>
             <p><strong>Wichtig:</strong> Beim Drucken <em>Hintergrund drucken</em> auswählen und sämtliche Banner deaktivieren (siehe Screenshot)!</p>
             <div style="clear:both;"></div>
         </div>
@@ -254,9 +255,9 @@ body {
         <script src="jquery-1.10.2.js"></script>
         <script src="jquery-ui.js"></script>
         <script>
-var col = '<ul class="col"></ul>';
-var group = '<li class="group"><input type="text" class="name" placeholder="Gruppe"> <a href="#" class="remove">-</a><br><span class="row"><input type="text" class="mail" placeholder="Mail"> <a href="#" class="add">+</a><br></span><div class="cover"></div></li>';
-var member = '<span class="row"><input type="text" class="member"> <a href="#" class="remove">-</a> / <a href="#" class="add">+</a><br></span>';
+var col = '<div class="col"></div>';
+var group = '<div class="group"><h1><input type="text" class="name" placeholder="Gruppe"> <input type="button" class="remove" value="-"></h1><h2 class="row"><input type="text" class="mail" placeholder="Mail"> <input type="button" class="add" value="+"></h2><ul></ul><div class="cover"></div></div>';
+var member = '<li class="row"><input type="text" class="member"> <input type="button" class="remove" value="-"> / <input type="button" class="add" value="+"></li>';
 var o = {"date":"","cols":[[],[],[]]};
 $.get("oih.json", function(data) {
     o = data;
@@ -269,23 +270,23 @@ $.get("oih.json", function(data) {
             $g.find("input.mail").val(o.cols[c][g].mail);
             for(var m in o.cols[c][g].members) {
                 $m = $(member);
-                $m.find("input").val(o.cols[c][g].members[m]);
-                $g.append($m);
+                $m.find("input.member").val(o.cols[c][g].members[m]);
+                $g.find("ul").append($m);
             }
             $c.append($g);
         }
         $("#form").append($c);
     }
 }, "json");
-$("#form").on("click", ".row>a.add", function(e) {
+$("#form").on("click", ".row>.add", function(e) {
     $(this).parent().after($(member));
 });
-$("#form").on("click", ".row>a.remove", function(e) {
+$("#form").on("click", ".row>.remove", function(e) {
     $(this).parent().remove();
 });
 // fixme: durch drag drop lösen:
-$("#form").on("click", ".group>a.remove", function(e) {
-    $(this).parent().remove();
+$("#form").on("click", ".group>.remove", function(e) {
+    $(this).parent().parent().remove();
 });
 $("#togglesort").click(function(e) {
     var iter = $(this).data("iteration") || 0;
