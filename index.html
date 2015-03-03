@@ -307,7 +307,7 @@ $("#addgroup").click(function(e) {
     var $g = $(group);
     $g.find("input.name").val("(Neue Gruppe)");
     $g.find("input.mail").val("(neu)");
-    $(".col:last").append($g);
+    $("#dontprintme .col:last").append($g);
 });
 $("#save").click(function(e) {
     $("#printme .listbody").empty();
