@@ -3,73 +3,254 @@
     <head>
         <title>Aktivenlistengenerator</title>
         <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="corporate/style.css">
         <style type="text/css">
-.col { float:left; list-style-type:none; margin:0.5em; padding:1em; background-color: grey; min-width: 10em; }
-.row { white-space:nowrap; }
-.group { position: relative; border: 0.5em solid white; margin: 0.5em; }
-.cover { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: white; opacity: 0.5; display: none; }
-#form.sort .cover { display: block; }
-.ribbon-wrapper-green {
-    width: 85px;
-    height: 88px;
-    overflow: hidden;
-    position: fixed;
-    top: -3px;
-    right: -3px;
-}
-.ribbon-green {
-    font: bold 15px Sans-Serif;
-    color: #333;
-    text-align: center;
-    text-shadow: rgba(255,255,255,0.5) 0px 1px 0px;
-    -webkit-transform: rotate(45deg);
-    -moz-transform:    rotate(45deg);
-    -ms-transform:     rotate(45deg);
-    -o-transform:      rotate(45deg);
-    position: relative;
-    padding: 7px 0;
-    left: -5px;
-    top: 15px;
-    width: 120px;
-    background-color: #BFDC7A;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#BFDC7A), to(#8EBF45)); 
-    background-image: -webkit-linear-gradient(top, #BFDC7A, #8EBF45); 
-    background-image:    -moz-linear-gradient(top, #BFDC7A, #8EBF45); 
-    background-image:     -ms-linear-gradient(top, #BFDC7A, #8EBF45); 
-    background-image:      -o-linear-gradient(top, #BFDC7A, #8EBF45); 
-    color: #6a6340;
-    -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
-    -moz-box-shadow:    0px 0px 3px rgba(0,0,0,0.3);
-    box-shadow:         0px 0px 3px rgba(0,0,0,0.3);
-}
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+ */
 
-.ribbon-green:before, .ribbon-green:after {
-    content: "";
-    border-top:   3px solid #6e8900;   
-    border-left:  3px solid transparent;
-    border-right: 3px solid transparent;
-    position:absolute;
-    bottom: -3px;
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, address, cite, code,
+del, dfn, img, ins, kbd, q, s, samp,
+small, sub, sup, var,
+b, u, i,
+dl, dt, dd, ol, ul, li, 
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td, 
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+@font-face {
+    font-family: 'tuerme';
+    src: url(data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAAS8AA0AAAAABqgAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAABMAAAABwAAAAccwBHvEdERUYAAAFMAAAAHAAAAB4AJwAOT1MvMgAAAWgAAABCAAAAVlYLYtRjbWFwAAABrAAAAEwAAAFKBN0JZ2dhc3AAAAH4AAAACAAAAAj//wADZ2x5ZgAAAgAAAAEFAAABVE3CNftoZWFkAAADCAAAADAAAAA2BUBmTWhoZWEAAAM4AAAAHQAAACQIKAQFaG10eAAAA1gAAAAXAAAAGA6zAvVsb2NhAAADcAAAABIAAAASAWIA7G1heHAAAAOEAAAAHgAAACAATgAnbmFtZQAAA6QAAADoAAABjBUb2a1wb3N0AAAEjAAAADAAAABawnVZFgAAAAEAAAAA0PODoAAAAADQ8TN+AAAAANEbkJ14nGNgZGBg4AFiMSBmYmAEQnYgZgHzGAAD6wA2eJxjYGRhYJzAwMrAwTST6QwDA0M/hGZ8zWDMyMnAwMTACiShgJEBCQSkuaYwODAkMqQyG/83ZohhUUaoAQC/eQmQAAB4nGNgYGBmgGAZBkYGEHAB8hjBfBYGDSDNBqQZGZiArNT//8EqEkH0/0VQ9UDAyMYA5zCCVDIxoAJGBsoBMwsrGzsVzKERAADz5gdMAAAAAf//AAJ4nE3PvUrEQBAH8JldLxuVVImZBBQRIbuIucBxmEYR1lcIV6Q5rCw2jdXVPoe1wVewyQN4D3GdT2B7nhNj4Kr5YH78d+EA7G4j3+UDHMIJnMIlAM6nqFWs6EZmOvO40iymUHu8nKH2Iioz+XYUBU2auuJ7sZw/FS6fRlnoXFW5+vPnxeW5S/H1/O72rOHVEr+uBMbUBOh520fH7lpMmnpduwo4EKwIcCUtHAOEpEhppUtd0kenfeObziQmkbYzvu4HMgkb8SwC2Q4GR1CSki3f8WWnGYn1iBJDveG/thj1ZjICTpPFXtBFZ9TQ6+TvbbsNrgZzj/+A0+xezKLv1Uh+AUbBQhEAAAB4nGNgZGBgAOI+v/An8fw2Xxm4WRhA4KL0RHE47fT/PvMKZmcgl4OBCSQKABxkCgt4nGNgZGBgUWZgYIhhYQAB5hUMjAyogAUAG+kBOQAAAHicY2GAABYIdmJwYipkKmRwAgAI5gG5AAAAAAAAAAAAAEIAXAB2AJAAqgAAeJxjYGRgYOBgUGFgYQABJiBmZACJOYD5DAAG8QB2AAB4nH2OMU7DQBBFnxPHJCJCNFBvAaUt2yuK5AARdYr0KTZWpMSWHFvchIoz0HIMDsAZuAPf1tBQsNLsvJn/ZzTAklcihheRcGM84YpH4ykPvBjHzHk3nnHNp3Gi/recUbxQZzlODTzRxjvjKc+kxjG3vBnPuOfDOFH/i46eQMtZP10f2rPyVkUl4cReEttQ9ae9YENDrZEht3IEHCUZufJacTDds1J463rpKYWiFBU8aVFTd5umrYIrs9yt3UG1X3kv9HlapGVeyPV3Hb822I1HXziOFqetwxXsQns5NrUrsvy/8R8DBDaReJxjYGJABowM6IADLMrEyMTIzMjCyMrIxp6eU1mQoWAIpY2gtDGUNoHSpgAH7Aye) format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@page {
+    margin: 0;
+}
+body {
+    margin: 0;
+    font-family: oih, sans-serif;
+}
+            .logohead input {
+                font-family: inherit;
+                font-size: inherit;
+                background-color: inherit;
+                color: inherit;
+                border: inherit;
+            }
+            #printme {
+                display: none;
+            }
+            @media print {
+                #dontprintme {
+                    display: none;
+                }
+                #printme {
+                    display: block;
+                }
+                .col {
+                    width: 33%;
+                }
+            }
+            .oih {
+                font-family: tuerme;
+                font-style: normal;
+                font-weight: normal;
+                text-align: left;
+                display: inline-block;
+                letter-spacing: -1em;
+                width: 1em;
+                /*text-shadow: 0px 1px 0px #000;*/
+            }
+            .logohead .oih::before {
+                content: "abde";
+                color: #de88cd;
+            }
+            .logohead .oih::after {
+                content: "c";
+            }
+            .logohead {
+                background-color: #a02c89;
+                color: #ffffff;
+                margin: 0;
+                padding: 1em 2em 0.2em 2em;
+            }
+            .logohead * {
+                margin: 0;
+                padding: 0;
+            }
+            .pink {
+                color: #de88cd;
+            }
+            .left {
+                text-align: left;
+            }
+            .right {
+                float: right;
+            }
+            .logohead>h1 {
+                font-style: normal;
+                font-weight: normal;
+                font-size: 6em;
+                letter-spacing: -0.08em;
+                line-height: 1em;
+            }
+            .logohead>h2 {
+                font-style: normal;
+                font-weight: normal;
+                font-size: 1.42em;
+                line-height: 1em;
+            }
+            .col { float:left; }/* list-style-type:none; margin:0.5em; padding:1em; background-color: grey; min-width: 10em; }*/
+            .row { white-space:nowrap; }
+            .group { position: relative; margin: 0.5em; }
+            .cover { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: white; opacity: 0.5; display: none; }
+            #form.sort .cover { display: block; }
+            .ribbon-wrapper-green {
+                width: 85px;
+                height: 88px;
+                overflow: hidden;
+                position: fixed;
+                top: -3px;
+                right: -3px;
+            }
+            .ribbon-green {
+                font: bold 15px Sans-Serif;
+                color: #333;
+                text-align: center;
+                text-shadow: rgba(255,255,255,0.5) 0px 1px 0px;
+                -webkit-transform: rotate(45deg);
+                -moz-transform:    rotate(45deg);
+                -ms-transform:     rotate(45deg);
+                -o-transform:      rotate(45deg);
+                position: relative;
+                padding: 7px 0;
+                left: -5px;
+                top: 15px;
+                width: 120px;
+                background-color: #BFDC7A;
+                background-image: -webkit-gradient(linear, left top, left bottom, from(#BFDC7A), to(#8EBF45)); 
+                background-image: -webkit-linear-gradient(top, #BFDC7A, #8EBF45); 
+                background-image:    -moz-linear-gradient(top, #BFDC7A, #8EBF45); 
+                background-image:     -ms-linear-gradient(top, #BFDC7A, #8EBF45); 
+                background-image:      -o-linear-gradient(top, #BFDC7A, #8EBF45); 
+                color: #6a6340;
+                -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+                -moz-box-shadow:    0px 0px 3px rgba(0,0,0,0.3);
+                box-shadow:         0px 0px 3px rgba(0,0,0,0.3);
+            }
 
-.ribbon-green:before {
-    left: 0;
-}
-.ribbon-green:after {
-    right: 0;
-}
+            .ribbon-green:before, .ribbon-green:after {
+                content: "";
+                border-top:   3px solid #6e8900;   
+                border-left:  3px solid transparent;
+                border-right: 3px solid transparent;
+                position:absolute;
+                bottom: -3px;
+            }
+
+            .ribbon-green:before {
+                left: 0;
+            }
+            .ribbon-green:after {
+                right: 0;
+            }
+            .group>h2::before {
+                font-family: FontAwesome;
+                content: "\f0e0\A";
+            }
+            a, a:visited, a:hover, a:link {
+                color: inherit;
+                text-decoration: inherit;
+                font-weight: inherit;
+                font-size: inherit;
+            }
+            .listbody {
+                padding: 0;
+                margin: 1em 2em;
+                line-height: 1em;
+                position: relative;
+            }
+            .listbody ul, .listbody h1 {
+                line-height: 1.25em;
+            }
+            .group>h1 {
+                font-weight: bold;
+            }
+            .group>h2 {
+                font-size: 0.8em;
+            }
+            .group {
+                page-break-inside: avoid;
+            }
         </style>
     </head>
     <body>
-        <div class="ribbon-wrapper-green"><div class="ribbon-green"><a href="https://git.oih.ac/netzag/mklist">CODE</a></div></div>
-        <input type="button" value="Umsortieren" id="togglesort">
-        <input type="button" value="Neue Gruppe" id="addgroup">
-        <input type="button" value="Erzeugen" id="create">
-        <a href="oih.out.pdf">Herunterladen</a>
-        <div style="clear:both;"></div>
-        <input type="text" id="date">
-        <div style="clear:both;"></div>
-        <div id="form"></div>
+        <div id="dontprintme">
+            <div class="ribbon-wrapper-green"><div class="ribbon-green"><a href="https://git.oih.ac/netzag/mklist">CODE</a></div></div>
+            <div style="clear:both;"></div>
+            <div class="logohead">
+                <h1><a href="http://oih.ac/aktive"><i class="oih"></i>oih<span class="pink">.ac/aktive</span></a></h1>
+                <h2>
+                    <span class="right pink">(Stand: <input type="text" id="date">)</span>
+                    <span class="left">Otto-Intze-Haus e.V.</span>
+                    <span class="pink">
+                        <input type="button" value="Umsortieren" id="togglesort">
+                        <input type="button" value="Neue Gruppe" id="addgroup">
+                        <input type="button" value="Speichern" id="save">
+                    </span>
+                </h2>
+            </div>
+            <div id="form"></div>
+            <img src="ss.jpg" style="float:left;">
+            <p><strong>Wichtig:</strong> Beim Drucken <em>Hintergrund drucken</em> auswählen und sämtliche Banner deaktivieren (siehe Screenshot)!</p>
+            <div style="clear:both;"></div>
+        </div>
+        <div id="printme">
+            <div class="logohead">
+                <h1><i class="oih"></i>oih<span class="pink">.ac/aktive</span></h1>
+                <h2>
+                    <span class="right pink">(Stand: <span id="date-out"></span>)</span>
+                    <span class="left">Otto-Intze-Haus e.V.</span>
+                </h2>
+            </div>
+            <div class="listbody"></div>
+        </div>
         <script src="jquery-1.10.2.js"></script>
         <script src="jquery-ui.js"></script>
         <script>
@@ -128,12 +309,15 @@ $("#addgroup").click(function(e) {
     $g.find("input.mail").val("(neu)");
     $(".col:last").append($g);
 });
-$("#create").click(function(e) {
+$("#save").click(function(e) {
+    $("#printme .listbody").empty();
     var n = {
         "date": $("#date").val(),
         "cols": []
     };
-    $(".col").each(function(i, e) {
+    $("#date-out").text(n.date);
+    $("#form .col").each(function(i, e) {
+        var outcol = $('<div class="col">');
         var c = [];
         $(e).find(".group").each(function(i2, e2) {
             var g = {
@@ -141,11 +325,25 @@ $("#create").click(function(e) {
                 "mail": $(e2).find("input.mail").val(),
                 "members": []
             };
+            var outgroup = $('<div class="group">');
+            var outname = $('<h1>').text(g.name);
+            var outmail = $('<h2>').text(g.mail);
+            outgroup.append(outname);
+            if(g.mail) {
+                outgroup.append(outmail);
+            }
+            var outmembers = $('<ul>');
             $(e2).find("input.member").each(function(i3, e3) {
+                var outmember = $('<li>');
                 g.members.push($(e3).val());
+                outmember.text($(e3).val());
+                outmembers.append(outmember);
             });
+            outgroup.append(outmembers);
+            outcol.append(outgroup);
             c.push(g);
         });
+        $("#printme .listbody").append(outcol);
         n.cols.push(c);
     });
     o = n;
@@ -158,7 +356,7 @@ $("#create").click(function(e) {
         dataType: "text",
         data: JSON.stringify(o),
         success: function(r) {
-            alert(r);
+            alert("Liste kann jetzt gedruckt werden");
         }
     });
 });

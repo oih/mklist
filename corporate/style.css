@@ -1,0 +1,27 @@
+/* Corporate font-faces by Andreas Kociok
+ * Usage:
+ * font-family: oih, sans-serif;
+ */
+@font-face {
+    font-family: oih;
+    src: url('font/OpenSans-Light.ttf');
+}
+
+@font-face {
+    font-family: oih;
+    src: url('font/OpenSans-LightItalic.ttf');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: oih;
+    src: url('font/OpenSans-Regular.ttf');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: oih;
+    src: url('font/OpenSans-Italic.ttf');
+    font-style: italic;
+    font-weight: bold;
+}
