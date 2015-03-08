@@ -53,7 +53,7 @@ func main() {
                 io.WriteString(w, err.Error())
                 panic(err)
             }
-            list.Create(target)
+            //list.Create(target)
             io.WriteString(w, "Liste kann jetzt heruntergeladen werden!")
         }
     })

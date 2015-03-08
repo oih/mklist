@@ -281,6 +281,7 @@ $.get("oih.json", function(data) {
         }
         $("#form").append($c);
     }
+    generate();
 }, "json");
 $("#form").on("click", ".row>.add", function(e) {
     $(this).parent().after($(member));
@@ -314,7 +315,8 @@ $("#addgroup").click(function(e) {
     $g.find("input.mail").val("(neu)");
     $("#dontprintme .col:last").append($g);
 });
-$("#save").click(function(e) {
+
+function generate() {
     $("#printme .listbody").empty();
     var n = {
         "date": $("#date").val(),
@@ -351,7 +353,10 @@ $("#save").click(function(e) {
         $("#printme .listbody").append(outcol);
         n.cols.push(c);
     });
-    o = n;
+    return n;
+}
+$("#save").click(function(e) {
+    o = generate();
     console.log(JSON.stringify(o));
     $.ajax({
         type: "POST",
