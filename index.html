@@ -263,7 +263,7 @@ body {
         <script>
 $.ajaxSetup({ cache: false });
 var col = '<div class="col"></div>';
-var group = '<div class="group"><h1><input type="text" class="name" placeholder="Gruppe"> <input type="button" class="remove" value="-"></h1><h2 class="row"><input type="text" class="mail" placeholder="Mail"> <input type="button" class="add" value="+"></h2><ul></ul><div class="cover"></div></div>';
+var group = '<div class="group"><h1><input type="text" class="name" placeholder="Gruppe"> <input type="button" class="remove" value="-"></h1><h2><input type="text" class="mail" placeholder="Mail"> <input type="button" class="add" value="+"></h2><ul></ul><div class="cover"></div></div>';
 var member = '<li class="row"><input type="text" class="member"> <input type="button" class="remove" value="-"> / <input type="button" class="add" value="+"></li>';
 var o = {"date":"","cols":[[],[],[]]};
 $.get("oih.json", function(data) {
@@ -289,11 +289,14 @@ $.get("oih.json", function(data) {
 $("#form").on("click", ".row>.add", function(e) {
     $(this).parent().after($(member));
 });
+$("#form").on("click", ".group>h2>.add", function(e) {
+    $(this).parent().parent().find("ul").prepend($(member));
+});
 $("#form").on("click", ".row>.remove", function(e) {
     $(this).parent().remove();
 });
 // fixme: durch drag drop lösen:
-$("#form").on("click", ".group>.remove", function(e) {
+$("#form").on("click", ".group>h1>.remove", function(e) {
     $(this).parent().parent().remove();
 });
 $("#togglesort").click(function(e) {
