@@ -469,7 +469,7 @@
                     <div class="group">
                         <h1>{{.Name}}</h1>
                         {{if .Mail}}
-                        <h2>{{.Mail}}</h2>
+                        <h2><a href="mailto:{{.Mail}}">{{.Mail}}</a></h2>
                         {{end}}
                         <ul>
                             {{range .Members}}
@@ -551,7 +551,13 @@
                             };
                             var outgroup = $('<div class="group">');
                             var outname = $("<h1>").text(g.name);
-                            var outmail = $("<h2>").text(g.mail);
+                            var outmail = $(
+                                '<h2><a href="mailto:' +
+                                    g.mail +
+                                    '">' +
+                                    g.mail +
+                                    "</a></h2>",
+                            );
                             outgroup.append(outname);
                             if (g.mail) {
                                 outgroup.append(outmail);
