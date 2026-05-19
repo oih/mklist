@@ -243,8 +243,10 @@ body {
                 </h2>
             </div>
             <div id="form" class="listbody"></div>
-            <img src="ss.jpg"><br>
-            <p><strong>Wichtig:</strong> Beim Drucken <em>Hintergrund drucken</em> auswählen und sämtliche Banner deaktivieren (siehe Screenshot)!</p>
+            <div id="printtip">
+                <img src="ss.jpg"><br>
+                <p><strong>Wichtig:</strong> Beim Drucken <em>Hintergrund drucken</em> auswählen und sämtliche Banner deaktivieren (siehe Screenshot)!</p>
+            </div>
             <div style="clear:both;"></div>
         </div>
         <div id="printme">
@@ -265,27 +267,45 @@ $.ajaxSetup({ cache: false });
 var col = '<div class="col"></div>';
 var group = '<div class="group"><h1><input type="text" class="name" placeholder="Gruppe"> <input type="button" class="remove" value="-"></h1><h2><input type="text" class="mail" placeholder="Mail"> <input type="button" class="add" value="+"></h2><ul></ul><div class="cover"></div></div>';
 var member = '<li class="row"><input type="text" class="member"> <input type="button" class="remove" value="-"> / <input type="button" class="add" value="+"></li>';
-var o = {"date":"","cols":[[],[],[]]};
-$.get("oih.json", function(data) {
-    o = data;
-    $("#date").val(o.date);
-    for(var c in o.cols) {
-        var $c = $(col);
-        for(var g in o.cols[c]) {
-            var $g = $(group);
-            $g.find("input.name").val(o.cols[c][g].name);
-            $g.find("input.mail").val(o.cols[c][g].mail);
-            for(var m in o.cols[c][g].members) {
-                $m = $(member);
-                $m.find("input.member").val(o.cols[c][g].members[m]);
-                $g.find("ul").append($m);
-            }
-            $c.append($g);
-        }
-        $("#form").append($c);
+var AUTH = {{.AuthJSON}};
+var o = {{.DataJSON}};
+
+(function() {
+    if (!AUTH.isHouse) {
+        $("#printtip").hide();
     }
-    generate();
-}, "json");
+    if (!AUTH.loggedIn) {
+        $("#togglesort, #addgroup, #save").hide();
+        $("#form").html('<p style="padding:1em;font-size:1rem;font-family:sans-serif">Bitte einloggen um die Aktivenliste zu sehen.</p>');
+        return;
+    }
+    if (!AUTH.isHouse) {
+        $("#togglesort, #addgroup, #save").hide();
+    }
+    if (o) {
+        $("#date").val(o.date);
+        for(var c in o.cols) {
+            var $c = $(col);
+            for(var g in o.cols[c]) {
+                var $g = $(group);
+                $g.find("input.name").val(o.cols[c][g].name);
+                $g.find("input.mail").val(o.cols[c][g].mail);
+                for(var m in o.cols[c][g].members) {
+                    $m = $(member);
+                    $m.find("input.member").val(o.cols[c][g].members[m]);
+                    $g.find("ul").append($m);
+                }
+                $c.append($g);
+            }
+            $("#form").append($c);
+        }
+        generate();
+    }
+    if (!AUTH.isHouse) {
+        $("#dontprintme").hide();
+        $("#printme").show();
+    }
+})();
 $("#form").on("click", ".row>.add", function(e) {
     $(this).parent().after($(member));
 });
