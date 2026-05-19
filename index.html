@@ -447,10 +447,14 @@
             <p style="padding: 1em; font-size: 1rem; font-family: sans-serif">
                 Bitte einloggen um die Aktivenliste zu sehen.
             </p>
+            {{else if not .Auth.HasRadius}}
+            <p style="padding: 1em; font-size: 1rem; font-family: sans-serif">
+                Die Aktivenliste ist nur für bestätigte Accounts sichtbar.
+            </p>
             {{end}}
             <div style="clear: both"></div>
         </div>
-        {{if .Auth.LoggedIn}}
+        {{if and .Auth.LoggedIn .Auth.HasRadius}}
         <div
             id="printme"
             {{if

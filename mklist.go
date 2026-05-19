@@ -28,6 +28,7 @@ type List struct {
 type AuthInfo struct {
 	LoggedIn bool
 	IsHouse  bool
+	HasRadius bool
 }
 
 type PageData struct {
@@ -66,10 +67,11 @@ func getAuth(r *http.Request) AuthInfo {
 	}
 
 	var level int
+	var radiusID sql.NullString
 	err = db.QueryRow(
-		"SELECT u.level FROM sessions s JOIN users u ON s.uid = u.id WHERE s.id = ? AND u.lastseen + INTERVAL 90 DAY > NOW()",
+		"SELECT u.level, u.radius_id FROM sessions s JOIN users u ON s.uid = u.id WHERE s.id = ? AND u.lastseen + INTERVAL 90 DAY > NOW()",
 		cookie.Value,
-	).Scan(&level)
+	).Scan(&level, &radiusID)
 
 	if err != nil {
 		if err != sql.ErrNoRows {
@@ -78,14 +80,18 @@ func getAuth(r *http.Request) AuthInfo {
 		return AuthInfo{}
 	}
 
-	return AuthInfo{LoggedIn: true, IsHouse: level <= 2}
+	return AuthInfo{
+		LoggedIn:  true,
+		IsHouse:   level <= 2,
+		HasRadius: radiusID.Valid,
+	}
 }
 
 func renderIndex(w http.ResponseWriter, r *http.Request, tmpl *template.Template) {
 	auth := getAuth(r)
 	var list *List
 
-	if auth.LoggedIn {
+	if auth.LoggedIn && auth.HasRadius {
 		data, err := os.ReadFile("oih.json")
 		if err == nil {
 			list = new(List)
