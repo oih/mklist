@@ -339,7 +339,13 @@
         </style>
     </head>
     <body>
-        <div id="dontprintme">
+        <div
+            id="dontprintme"
+            {{if
+            not
+            .Auth.IsHouse}}style="display:none"
+            {{end}}
+        >
             <!--<div class="ribbon-wrapper-green">
                 <div class="ribbon-green">
                     <a href="https://git.oih.ac/netzag/mklist">CODE</a>
