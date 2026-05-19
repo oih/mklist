@@ -3,13 +3,13 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
-	htmltmpl "html/template"
+	"html/template"
 	"io"
 	"net/http"
 	"os"
 	"os/exec"
 	"sync"
-	"text/template"
+	texttmpl "text/template"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -26,13 +26,13 @@ type List struct {
 }
 
 type AuthInfo struct {
-	LoggedIn bool `json:"loggedIn"`
-	IsHouse  bool `json:"isHouse"`
+	LoggedIn bool
+	IsHouse  bool
 }
 
 type PageData struct {
-	AuthJSON htmltmpl.JS
-	DataJSON htmltmpl.JS
+	Auth AuthInfo
+	Data *List
 }
 
 var m map[string]*sync.Mutex = make(map[string]*sync.Mutex)
@@ -54,22 +54,19 @@ func getAuth(r *http.Request) AuthInfo {
 	return AuthInfo{LoggedIn: true, IsHouse: level <= 2}
 }
 
-func renderIndex(w http.ResponseWriter, r *http.Request, tmpl *htmltmpl.Template) {
+func renderIndex(w http.ResponseWriter, r *http.Request, tmpl *template.Template) {
 	auth := getAuth(r)
-	authBytes, _ := json.Marshal(auth)
-
-	listBytes := []byte("null")
+	var list *List
 	if auth.LoggedIn {
 		if data, err := os.ReadFile("oih.json"); err == nil {
-			listBytes = data
+			list = new(List)
+			if err := json.Unmarshal(data, list); err != nil {
+				list = nil
+			}
 		}
 	}
-
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	tmpl.Execute(w, PageData{
-		AuthJSON: htmltmpl.JS(authBytes),
-		DataJSON: htmltmpl.JS(listBytes),
-	})
+	tmpl.Execute(w, PageData{Auth: auth, Data: list})
 }
 
 func main() {
@@ -81,7 +78,7 @@ func main() {
 		}
 	}
 
-	indexTmpl, err := htmltmpl.ParseFiles("index.html")
+	indexTmpl, err := template.ParseFiles("index.html")
 	if err != nil {
 		panic(err)
 	}
@@ -118,16 +115,13 @@ func main() {
 		io.WriteString(w, "Liste kann jetzt heruntergeladen werden!")
 	})
 
-	fs := http.FileServer(http.Dir("."))
+	fs := http.FileServer(http.Dir("public"))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		switch r.URL.Path {
-		case "/", "/index.html":
+		if r.URL.Path == "/" || r.URL.Path == "/index.html" {
 			renderIndex(w, r, indexTmpl)
-		case "/oih.json":
-			http.NotFound(w, r)
-		default:
-			fs.ServeHTTP(w, r)
+			return
 		}
+		fs.ServeHTTP(w, r)
 	})
 
 	if err := http.ListenAndServe(":80", nil); err != nil {
@@ -136,7 +130,7 @@ func main() {
 }
 
 func (test *List) Create(target string) {
-	tmpl, err := template.ParseFiles(target + ".tmpl")
+	tmpl, err := texttmpl.ParseFiles(target + ".tmpl")
 	if err != nil {
 		panic(err)
 	}
