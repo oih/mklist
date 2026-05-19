@@ -7,9 +7,7 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"os/exec"
 	"sync"
-	texttmpl "text/template"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -124,27 +122,11 @@ func main() {
 		fs.ServeHTTP(w, r)
 	})
 
-	if err := http.ListenAndServe(":80", nil); err != nil {
-		panic(err)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
 	}
-}
-
-func (test *List) Create(target string) {
-	tmpl, err := texttmpl.ParseFiles(target + ".tmpl")
-	if err != nil {
-		panic(err)
-	}
-	svgfile, err := os.Create(target + ".out.svg")
-	if err != nil {
-		panic(err)
-	}
-	if err = tmpl.Execute(svgfile, test); err != nil {
-		panic(err)
-	}
-	if err = exec.Command("rsvg-convert", "-f", "pdf", "-o", target+".out.pdf", target+".out.svg").Run(); err != nil {
-		panic(err)
-	}
-	if err = exec.Command("rsvg-convert", "-f", "png", "-o", target+".out.png", target+".out.svg").Run(); err != nil {
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		panic(err)
 	}
 }
