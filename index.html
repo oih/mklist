@@ -392,8 +392,10 @@
         <div
             id="dontprintme"
             {{if
-            not
-            .Auth.IsHouse}}style="display:none"
+            and
+            .Auth.LoggedIn
+            (not
+            .Auth.IsHouse)}}style="display:none"
             {{end}}
         >
             <div class="logohead">
