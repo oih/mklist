@@ -3,6 +3,7 @@
     <head>
         <title>Aktivenlistengenerator</title>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
             rel="stylesheet"
             type="text/css"
@@ -10,11 +11,7 @@
         />
 
         <style type="text/css">
-            /* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
- */
-
+            /* RESET */
             html,
             body,
             div,
@@ -95,7 +92,6 @@
                 font: inherit;
                 vertical-align: baseline;
             }
-            /* HTML5 display-role reset for older browsers */
             article,
             aside,
             details,
@@ -109,28 +105,38 @@
             section {
                 display: block;
             }
+            @page {
+                margin: 0;
+            }
             body {
                 line-height: 1;
+                font-family: oih, sans-serif;
+                margin: 0;
             }
             ol,
             ul {
                 list-style: none;
             }
-            blockquote,
-            q {
-                quotes: none;
-            }
-            blockquote:before,
-            blockquote:after,
-            q:before,
-            q:after {
-                content: "";
-                content: none;
-            }
             table {
                 border-collapse: collapse;
                 border-spacing: 0;
             }
+            input {
+                font-family: inherit;
+                font-size: inherit;
+                background-color: inherit;
+                color: inherit;
+                border: inherit;
+                font-weight: inherit;
+            }
+            a {
+                color: inherit;
+                text-decoration: inherit;
+                font-weight: inherit;
+                font-size: inherit;
+            }
+
+            /* FONTS */
             @font-face {
                 font-family: "tuerme";
                 src: url(data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAAS8AA0AAAAABqgAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAABMAAAABwAAAAccwBHvEdERUYAAAFMAAAAHAAAAB4AJwAOT1MvMgAAAWgAAABCAAAAVlYLYtRjbWFwAAABrAAAAEwAAAFKBN0JZ2dhc3AAAAH4AAAACAAAAAj//wADZ2x5ZgAAAgAAAAEFAAABVE3CNftoZWFkAAADCAAAADAAAAA2BUBmTWhoZWEAAAM4AAAAHQAAACQIKAQFaG10eAAAA1gAAAAXAAAAGA6zAvVsb2NhAAADcAAAABIAAAASAWIA7G1heHAAAAOEAAAAHgAAACAATgAnbmFtZQAAA6QAAADoAAABjBUb2a1wb3N0AAAEjAAAADAAAABawnVZFgAAAAEAAAAA0PODoAAAAADQ8TN+AAAAANEbkJ14nGNgZGBg4AFiMSBmYmAEQnYgZgHzGAAD6wA2eJxjYGRhYJzAwMrAwTST6QwDA0M/hGZ8zWDMyMnAwMTACiShgJEBCQSkuaYwODAkMqQyG/83ZohhUUaoAQC/eQmQAAB4nGNgYGBmgGAZBkYGEHAB8hjBfBYGDSDNBqQZGZiArNT//8EqEkH0/0VQ9UDAyMYA5zCCVDIxoAJGBsoBMwsrGzsVzKERAADz5gdMAAAAAf//AAJ4nE3PvUrEQBAH8JldLxuVVImZBBQRIbuIucBxmEYR1lcIV6Q5rCw2jdXVPoe1wVewyQN4D3GdT2B7nhNj4Kr5YH78d+EA7G4j3+UDHMIJnMIlAM6nqFWs6EZmOvO40iymUHu8nKH2Iioz+XYUBU2auuJ7sZw/FS6fRlnoXFW5+vPnxeW5S/H1/O72rOHVEr+uBMbUBOh520fH7lpMmnpduwo4EKwIcCUtHAOEpEhppUtd0kenfeObziQmkbYzvu4HMgkb8SwC2Q4GR1CSki3f8WWnGYn1iBJDveG/thj1ZjICTpPFXtBFZ9TQ6+TvbbsNrgZzj/+A0+xezKLv1Uh+AUbBQhEAAAB4nGNgZGBgAOI+v/An8fw2Xxm4WRhA4KL0RHE47fT/PvMKZmcgl4OBCSQKABxkCgt4nGNgZGBgUWZgYIhhYQAB5hUMjAyogAUAG+kBOQAAAHicY2GAABYIdmJwYipkKmRwAgAI5gG5AAAAAAAAAAAAAEIAXAB2AJAAqgAAeJxjYGRgYOBgUGFgYQABJiBmZACJOYD5DAAG8QB2AAB4nH2OMU7DQBBFnxPHJCJCNFBvAaUt2yuK5AARdYr0KTZWpMSWHFvchIoz0HIMDsAZuAPf1tBQsNLsvJn/ZzTAklcihheRcGM84YpH4ykPvBjHzHk3nnHNp3Gi/recUbxQZzlODTzRxjvjKc+kxjG3vBnPuOfDOFH/i46eQMtZP10f2rPyVkUl4cReEttQ9ae9YENDrZEht3IEHCUZufJacTDds1J463rpKYWiFBU8aVFTd5umrYIrs9yt3UG1X3kv9HlapGVeyPV3Hb822I1HXziOFqetwxXsQns5NrUrsvy/8R8DBDaReJxjYGJABowM6IADLMrEyMTIzMjCyMrIxp6eU1mQoWAIpY2gtDGUNoHSpgAH7Aye)
@@ -142,46 +148,46 @@
                 font-family: FontAwesome;
                 src: url("fonts/FontAwesome.ttf");
             }
-            @page {
-                margin: 0;
-            }
-            body {
-                margin: 0;
-                font-family: oih, sans-serif;
-            }
-            input {
-                font-family: inherit;
-                font-size: inherit;
-                background-color: inherit;
-                color: inherit;
-                border: inherit;
-                font-weight: inherit;
-            }
+
+            /* LAYOUT WRAPPERS */
             #printme {
                 display: none;
             }
-            @media print {
-                #dontprintme {
-                    display: none;
-                }
-                #printme {
-                    display: block;
-                }
-                .col {
-                    width: 33%;
-                }
-                .group h2 a {
-                    color: inherit !important;
-                    text-decoration: none !important;
-                }
+            .logohead {
+                background-color: #a02c89;
+                color: #ffffff;
+                padding: 1em 0 0.2em 0;
+                text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+                print-color-adjust: exact;
+                display: flex;
+                justify-content: center;
             }
-            .group h2 a {
-                color: #a02c89;
+            .list-wrapper {
+                display: flex;
+                justify-content: center;
+                width: 100%;
             }
-            .group h2 a:hover {
-                text-decoration: underline;
+            .container,
+            .listbody {
+                width: 900px;
+                max-width: 100%;
+                margin: 0 2em;
             }
 
+            /* HEADER CONTENT */
+            .logohead h1 {
+                font-size: 6em;
+                letter-spacing: -0.08em;
+                line-height: 1em;
+                text-align: left;
+            }
+            .logohead h2 {
+                font-size: 1.42em;
+                line-height: 1em;
+                text-align: left;
+            }
             .oih {
                 font-family: tuerme;
                 font-style: normal;
@@ -198,52 +204,147 @@
             .logohead .oih::after {
                 content: "c";
             }
-            .logohead {
-                background-color: #a02c89;
-                color: #ffffff;
-                margin: 0;
-                padding: 1em 2em 0.2em 2em;
-                text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
-                -webkit-print-color-adjust: exact;
-                color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .logohead * {
-                margin: 0;
-                padding: 0;
-            }
             .pink {
                 color: #de88cd;
-            }
-            .left {
-                text-align: left;
             }
             .right {
                 float: right;
             }
-            .logohead > h1 {
-                font-style: normal;
-                font-weight: normal;
-                font-size: 6em;
-                letter-spacing: -0.08em;
-                line-height: 1em;
+
+            /* LIST CONTENT */
+            .listbody {
+                padding: 0;
+                margin-top: 1em;
+                margin-bottom: 1em;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start;
             }
-            .logohead > h2 {
-                font-style: normal;
-                font-weight: normal;
-                font-size: 1.42em;
-                line-height: 1em;
+            .listbody ul,
+            .listbody h1 {
+                line-height: 1.25em;
+            }
+            .listbody li {
+                padding: 0.15em 0;
             }
             .col {
-                float: left;
-            }
-            .row {
-                white-space: nowrap;
+                flex: 0 1 300px;
+                min-width: 300px;
             }
             .group {
                 position: relative;
-                margin: 0.5em;
+                margin: 1.5em 0.25em;
+                page-break-inside: avoid;
             }
+            .col .group:last-child {
+                margin-bottom: 0;
+            }
+            .group > h1 {
+                font-weight: bold;
+            }
+            .group > h2 {
+                font-size: 0.8em;
+                padding-bottom: 0.25em;
+            }
+            .group > h2::before {
+                font-family: FontAwesome;
+                content: "\f0e0\A";
+            }
+            .group h2 a {
+                color: #a02c89;
+            }
+            .group h2 a:hover {
+                text-decoration: underline;
+            }
+
+            /* RESPONSIVE */
+            @media (max-width: 920px) {
+                .container,
+                .listbody {
+                    width: 600px;
+                    margin: 0 2em;
+                }
+            }
+            @media (max-width: 800px) {
+                .logohead h1 {
+                    font-size: 3em;
+                }
+                .logohead h2 {
+                    font-size: 1.1em;
+                }
+                .logohead .right {
+                    display: block;
+                }
+            }
+            @media (max-width: 620px) {
+                .container,
+                .listbody {
+                    width: 100%;
+                    margin: 0;
+                    padding: 0 1em;
+                }
+                .col {
+                    flex: 1 1 100%;
+                    min-width: 100%;
+                }
+            }
+
+            /* PRINT */
+            #printme {
+                display: none;
+            }
+            @media print {
+                html,
+                body {
+                    margin: 0 !important;
+                    padding: 0 !important;
+                }
+                #dontprintme {
+                    display: none;
+                }
+                #printme {
+                    display: block;
+                }
+                .logohead,
+                .list-wrapper {
+                    display: block !important;
+                    margin: 0 !important;
+                    width: 100% !important;
+                }
+                .logohead h1 {
+                    font-size: 6em !important;
+                }
+                .logohead h2 {
+                    font-size: 1.42em !important;
+                }
+                .logohead .right {
+                    float: right !important;
+                    display: inline !important;
+                    margin-top: 0 !important;
+                }
+                .container,
+                .listbody {
+                    width: auto !important;
+                    margin: 0 1em !important;
+                    padding: 0 !important;
+                }
+                .listbody {
+                    display: block !important;
+                    margin-top: 1em !important;
+                }
+                .col {
+                    width: 33.33% !important;
+                    float: left !important;
+                    min-width: 0 !important;
+                    flex: none !important;
+                }
+                .group h2 a {
+                    color: inherit !important;
+                    text-decoration: none !important;
+                }
+            }
+
+            /* EDITOR SPECIFIC */
             .cover {
                 position: absolute;
                 top: 0;
@@ -257,6 +358,12 @@
             #form.sort .cover {
                 display: block;
             }
+            #printtip {
+                text-align: center;
+                margin: 2em 0;
+            }
+
+            /* LEGACY RIBBON */
             .ribbon-wrapper-green {
                 width: 85px;
                 height: 88px;
@@ -267,89 +374,17 @@
             }
             .ribbon-green {
                 font: bold 15px Sans-Serif;
-                color: #333;
+                color: #6a6340;
                 text-align: center;
-                text-shadow: rgba(255, 255, 255, 0.5) 0px 1px 0px;
                 -webkit-transform: rotate(45deg);
-                -moz-transform: rotate(45deg);
-                -ms-transform: rotate(45deg);
-                -o-transform: rotate(45deg);
+                transform: rotate(45deg);
                 position: relative;
                 padding: 7px 0;
                 left: -5px;
                 top: 15px;
                 width: 120px;
                 background-color: #bfdc7a;
-                background-image: -webkit-gradient(
-                    linear,
-                    left top,
-                    left bottom,
-                    from(#bfdc7a),
-                    to(#8ebf45)
-                );
-                background-image: -webkit-linear-gradient(
-                    top,
-                    #bfdc7a,
-                    #8ebf45
-                );
-                background-image: -moz-linear-gradient(top, #bfdc7a, #8ebf45);
-                background-image: -ms-linear-gradient(top, #bfdc7a, #8ebf45);
-                background-image: -o-linear-gradient(top, #bfdc7a, #8ebf45);
-                color: #6a6340;
-                -webkit-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
-                -moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
                 box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
-            }
-            .ribbon-green:before,
-            .ribbon-green:after {
-                content: "";
-                border-top: 3px solid #6e8900;
-                border-left: 3px solid transparent;
-                border-right: 3px solid transparent;
-                position: absolute;
-                bottom: -3px;
-            }
-            .ribbon-green:before {
-                left: 0;
-            }
-            .ribbon-green:after {
-                right: 0;
-            }
-            .group > h2::before {
-                font-family: FontAwesome;
-                content: "\f0e0\A";
-            }
-            a,
-            a:visited,
-            a:hover,
-            a:link {
-                color: inherit;
-                text-decoration: inherit;
-                font-weight: inherit;
-                font-size: inherit;
-            }
-            .listbody {
-                padding: 0;
-                margin: 1em 2em;
-                line-height: 1em;
-                position: relative;
-            }
-            .listbody ul,
-            .listbody h1 {
-                line-height: 1.25em;
-            }
-            .listbody li {
-                padding: 0.15em 0;
-            }
-            .group > h1 {
-                font-weight: bold;
-            }
-            .group > h2 {
-                font-size: 0.8em;
-                padding-bottom: 0.25em;
-            }
-            .group {
-                page-break-inside: avoid;
             }
         </style>
     </head>
@@ -361,79 +396,94 @@
             .Auth.IsHouse}}style="display:none"
             {{end}}
         >
-            <!--<div class="ribbon-wrapper-green">
-                <div class="ribbon-green">
-                    <a href="https://git.oih.ac/netzag/mklist">CODE</a>
-                </div>
-            </div>-->
-            <div style="clear: both"></div>
             <div class="logohead">
-                <h1>
-                    <a href="http://oih.ac/aktive"
-                        ><i class="oih"></i>oih<span class="pink"
-                            >.ac/aktive</span
-                        ></a
-                    >
-                </h1>
-                <h2>
-                    <span class="right pink"
-                        >(Stand: {{if and .Auth.LoggedIn .Data}}{{if
-                        .Auth.IsHouse}}<input
-                            type="text"
-                            id="date"
-                            value="{{.Data.Date}}"
-                        />{{else}}{{.Data.Date}}{{end}}{{end}})</span
-                    >
-                    <span class="left">Otto-Intze-Haus e.V.</span>
-                    {{if .Auth.IsHouse}}
-                    <span class="pink">
-                        <input
-                            type="button"
-                            value="Umsortieren"
-                            id="togglesort"
-                        />
-                        <input
-                            type="button"
-                            value="Neue Gruppe"
-                            id="addgroup"
-                        />
-                        <input type="button" value="Speichern" id="save" />
-                    </span>
-                    {{end}}
-                </h2>
+                <div class="container">
+                    <h1>
+                        <a href="http://oih.ac/aktive"
+                            ><i class="oih"></i>oih<span class="pink"
+                                >.ac/aktive</span
+                            ></a
+                        >
+                    </h1>
+                    <h2>
+                        <span class="right pink"
+                            >(Stand: {{if and .Auth.LoggedIn .Data}}{{if
+                            .Auth.IsHouse}}<input
+                                type="text"
+                                id="date"
+                                value="{{.Data.Date}}"
+                            />{{else}}{{.Data.Date}}{{end}}{{end}})</span
+                        >
+                        <span class="left">Otto-Intze-Haus e.V.</span>
+                        {{if .Auth.IsHouse}}
+                        <span class="pink">
+                            <input
+                                type="button"
+                                value="Umsortieren"
+                                id="togglesort"
+                            />
+                            <input
+                                type="button"
+                                value="Neue Gruppe"
+                                id="addgroup"
+                            />
+                            <input type="button" value="Speichern" id="save" />
+                        </span>
+                        {{end}}
+                    </h2>
+                </div>
             </div>
             {{if and .Auth.IsHouse .Data}}
-            <div id="form" class="listbody">
-                {{range .Data.Cols}}
-                <div class="col">
-                    {{range .}}
-                    <div class="group">
-                        <h1>
-                            <input type="text" class="name" value="{{.Name}}" />
-                            <input type="button" class="remove" value="-" />
-                        </h1>
-                        <h2>
-                            <input type="text" class="mail" value="{{.Mail}}" />
-                            <input type="button" class="add" value="+" />
-                        </h2>
-                        <ul>
-                            {{range .Members}}
-                            <li class="row">
+            <div class="list-wrapper">
+                <div id="form" class="listbody">
+                    {{range .Data.Cols}}
+                    <div class="col">
+                        {{range .}}
+                        <div class="group">
+                            <h1>
                                 <input
                                     type="text"
-                                    class="member"
-                                    value="{{.}}"
+                                    class="name"
+                                    value="{{.Name}}"
                                 />
                                 <input type="button" class="remove" value="-" />
-                                / <input type="button" class="add" value="+" />
-                            </li>
-                            {{end}}
-                        </ul>
-                        <div class="cover"></div>
+                            </h1>
+                            <h2>
+                                <input
+                                    type="text"
+                                    class="mail"
+                                    value="{{.Mail}}"
+                                />
+                                <input type="button" class="add" value="+" />
+                            </h2>
+                            <ul>
+                                {{range .Members}}
+                                <li class="row">
+                                    <input
+                                        type="text"
+                                        class="member"
+                                        value="{{.}}"
+                                    />
+                                    <input
+                                        type="button"
+                                        class="remove"
+                                        value="-"
+                                    />
+                                    /
+                                    <input
+                                        type="button"
+                                        class="add"
+                                        value="+"
+                                    />
+                                </li>
+                                {{end}}
+                            </ul>
+                            <div class="cover"></div>
+                        </div>
+                        {{end}}
                     </div>
                     {{end}}
                 </div>
-                {{end}}
             </div>
             <div id="printtip">
                 <img src="ss.jpg" /><br />
@@ -443,58 +493,75 @@
                     deaktivieren (siehe Screenshot)!
                 </p>
             </div>
-            {{else if not .Auth.LoggedIn}}
-            <p style="padding: 1em; font-size: 1rem; font-family: sans-serif">
+            {{else if not .Auth.LoggedIn}} {{if not .Data}}
+            <p
+                style="
+                    padding: 1em;
+                    font-size: 1rem;
+                    font-family: sans-serif;
+                    text-align: center;
+                "
+            >
                 Bitte einloggen um die Aktivenliste zu sehen.
             </p>
-            {{else if not .Auth.HasRadius}}
-            <p style="padding: 1em; font-size: 1rem; font-family: sans-serif">
+            {{end}} {{else if not .Auth.HasRadius}}
+            <p
+                style="
+                    padding: 1em;
+                    font-size: 1rem;
+                    font-family: sans-serif;
+                    text-align: center;
+                "
+            >
                 Die Aktivenliste ist nur für bestätigte Accounts sichtbar.
             </p>
             {{end}}
             <div style="clear: both"></div>
         </div>
-        {{if and .Auth.LoggedIn .Auth.HasRadius}}
-        <div
-            id="printme"
-            {{if
-            not
-            .Auth.IsHouse}}
-            style="display: block"
-            {{end}}
-        >
+
+        {{if or (and .Auth.LoggedIn .Auth.HasRadius) (and (not .Auth.LoggedIn)
+        .Data)}}
+        <div id="printme" {{if not .Auth.IsHouse}}style="display:block" {{end}}>
             <div class="logohead">
-                <h1>
-                    <i class="oih"></i>oih<span class="pink">.ac/aktive</span>
-                </h1>
-                <h2>
-                    <span class="right pink"
-                        >(Stand:
-                        <span id="date-out"
-                            >{{if .Data}}{{.Data.Date}}{{end}}</span
-                        >)</span
-                    >
-                    <span class="left">Otto-Intze-Haus e.V.</span>
-                </h2>
-            </div>
-            <div class="listbody">
-                {{if .Data}}{{range .Data.Cols}}
-                <div class="col">
-                    {{range .}}
-                    <div class="group">
-                        <h1>{{.Name}}</h1>
-                        {{if .Mail}}
-                        <h2><a href="mailto:{{.Mail}}">{{.Mail}}</a></h2>
-                        {{end}}
-                        <ul>
-                            {{range .Members}}
-                            <li>{{.}}</li>
-                            {{end}}
-                        </ul>
-                    </div>
-                    {{end}}
+                <div class="container">
+                    <h1>
+                        <i class="oih"></i>oih<span class="pink"
+                            >.ac/aktive</span
+                        >
+                    </h1>
+                    <h2>
+                        <span class="right pink"
+                            >(Stand:
+                            <span id="date-out"
+                                >{{if .Data}}{{.Data.Date}}{{end}}</span
+                            >)</span
+                        >
+                        <span class="left">Otto-Intze-Haus e.V.</span>
+                    </h2>
                 </div>
-                {{end}}{{end}}
+            </div>
+            <div class="list-wrapper">
+                <div class="listbody">
+                    {{if .Data}}{{range .Data.Cols}}
+                    <div class="col">
+                        {{range .}}
+                        <div class="group">
+                            <h1>{{.Name}}</h1>
+                            {{if .Mail}}
+                            <h2>
+                                <a href="mailto:{{.Mail}}">{{.Mail}}</a>
+                            </h2>
+                            {{end}}
+                            <ul>
+                                {{range .Members}}
+                                <li>{{.}}</li>
+                                {{end}}
+                            </ul>
+                        </div>
+                        {{end}}
+                    </div>
+                    {{end}}{{end}}
+                </div>
             </div>
         </div>
         {{end}} {{if .Auth.IsHouse}}
