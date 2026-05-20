@@ -91,7 +91,7 @@ func renderIndex(w http.ResponseWriter, r *http.Request, tmpl *template.Template
 	auth := getAuth(r)
 	var list *List
 
-	if auth.LoggedIn && auth.HasRadius {
+	if (auth.LoggedIn && auth.HasRadius) || db == nil {
 		data, err := os.ReadFile("oih.json")
 		if err == nil {
 			list = new(List)
