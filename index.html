@@ -675,7 +675,14 @@
                     dataType: "text",
                     data: JSON.stringify(o),
                     success: function (r) {
-                        alert("Liste kann jetzt gedruckt werden");
+                        if (r.indexOf("Hinweise zur Datenbank") === 0) {
+                            alert("Liste kann jetzt gedruckt werden.\n\n" + r);
+                        } else {
+                            alert("Liste kann jetzt gedruckt werden");
+                        }
+                    },
+                    error: function (xhr) {
+                        alert(xhr.responseText || "Fehler beim Speichern");
                     },
                 });
             });

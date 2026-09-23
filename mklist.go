@@ -37,8 +37,9 @@ type PageData struct {
 }
 
 var (
-	m  map[string]*sync.Mutex = make(map[string]*sync.Mutex)
-	db *sql.DB
+	m         map[string]*sync.Mutex = make(map[string]*sync.Mutex)
+	db        *sql.DB
+	membersDB *sql.DB
 )
 
 // loggingMiddleware logs details about every incoming request.
@@ -135,6 +136,22 @@ func main() {
 		slog.Warn("MKLIST_DB_DSN not set, running in local/no-auth mode")
 	}
 
+	if dsn := os.Getenv("MKLIST_MEMBERS_DB_DSN"); dsn != "" {
+		var err error
+		membersDB, err = sql.Open("mysql", dsn)
+		if err != nil {
+			slog.Error("failed to open members database", "error", err)
+			os.Exit(1)
+		}
+		if err := membersDB.Ping(); err != nil {
+			slog.Warn("members database ping failed, group sync will not work", "error", err)
+		} else {
+			slog.Info("members database connected successfully")
+		}
+	} else {
+		slog.Warn("MKLIST_MEMBERS_DB_DSN not set, group memberships will not be synced")
+	}
+
 	indexTmpl, err := template.ParseFiles("index.html")
 	if err != nil {
 		slog.Error("failed to parse index.html template", "error", err)
@@ -185,6 +202,22 @@ func main() {
 		}
 
 		slog.Info("list updated successfully", "user_agent", r.UserAgent())
+
+		if membersDB == nil {
+			io.WriteString(w, "Liste wurde erfolgreich gespeichert!")
+			return
+		}
+		warnings, err := syncGroups(r.Context(), list)
+		if err != nil {
+			slog.Error("failed to sync group memberships", "error", err)
+			http.Error(w, "Liste gespeichert, aber Datenbankfehler beim Aktualisieren der Gruppen", http.StatusInternalServerError)
+			return
+		}
+		if len(warnings) > 0 {
+			slog.Warn("group sync produced warnings", "groups", len(warnings))
+			io.WriteString(w, formatWarnings(warnings))
+			return
+		}
 		io.WriteString(w, "Liste wurde erfolgreich gespeichert!")
 	})
 
